@@ -1,0 +1,60 @@
+Liskov Substitution Principle (LSP) :
+Voici un exemple de mauvaise utilisation de LSP dans une classe de gestion de formulaires :
+
+```PHP
+class Form {
+  public function validate() {
+    // Valide le formulaire
+  }
+}
+
+class LoginForm extends Form {
+  public function validate() {
+    // Valide le formulaire de connexion en vérifiant que le nom d'utilisateur et le mot de passe sont présents
+  }
+}
+
+class RegisterForm extends Form {
+  public function validate() {
+    // Valide le formulaire d'inscription en vérifiant que tous les champs obligatoires sont présents
+  }
+}
+
+$forms = [new LoginForm(), new RegisterForm()];
+foreach ($forms as $form) {
+  if (!$form->validate()) {
+    // Affiche un message d'erreur
+  }
+}
+```
+
+Dans cet exemple, la méthode validate() de la classe LoginForm a un comportement différent de la méthode validate() de la classe Form, ce qui va à l'encontre de LSP. Selon LSP, une sous-classe devrait pouvoir être utilisée à la place de sa classe de base sans affecter le bon fonctionnement du programme.
+
+Voici comment cela pourrait être implémenté :
+
+```PHP
+interface FormValidator {
+  public function validate();
+}
+
+class Form implements FormValidator {
+  public function validate() {
+    // Valide le formulaire
+  }
+}
+
+class LoginForm implements FormValidator {
+  public function validate() {
+    // Valide le formulaire de connexion en vérifiant que le nom d'utilisateur et le mot de passe sont présents
+  }
+}
+
+class RegisterForm implements FormValidator { public function validate() { // Valide le formulaire d 'inscription en vérifiant selon le formulaire les données qu' il contient $forms = [new LoginForm(), new RegisterForm()];
+foreach ($forms as $form) { if (! $form->validate()) { // Affiche un message d 'erreur
+  }
+}
+  }
+}
+```
+
+En utilisant cette approche, vous pouvez être sûr que toutes les classes qui implémentent FormValidator auront une méthode validate() qui fonctionne de la même manière et qui peut être utilisée de manière interchangeable dans votre programme.

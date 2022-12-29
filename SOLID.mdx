@@ -1,0 +1,79 @@
+# Les principes **`SOLID`**
+
+## **`Single Responsibility Principle (SRP) :`**
+
+Chaque classe doit avoir une seule responsabilité et ne devrait être modifiée que pour des changements liés à cette responsabilité. Par exemple, une classe de gestion de bases de données devrait se concentrer sur la gestion de la base de données et ne pas avoir de code pour la présentation de l'interface utilisateur.
+
+---
+
+## **`Open/Closed Principle (OCP) :`**
+
+Les classes doivent être ouvertes pour l'extension, mais fermées pour la modification. Cela signifie qu'il devrait être possible de étendre les fonctionnalités d'une classe sans avoir à la modifier directement. Par exemple, vous pourriez ajouter de nouvelles fonctionnalités à une classe en créant une sous-classe ou en implémentant une interface, plutôt que de modifier directement le code de la classe existante.
+
+---
+
+## **`Liskov Substitution Principle (LSP) :`**
+
+Les sous-classes doivent être interchangeables avec leurs classes de base. Cela signifie que si une classe est utilisée dans un programme, une sous-classe de cette classe devrait pouvoir être utilisée à sa place sans que le programme ne soit affecté de manière négative. Par exemple, si une classe "Shape" est utilisée dans un programme, une sous-classe "Rectangle" devrait pouvoir être utilisée à la place de "Shape" sans que le programme ne soit affecté de manière négative.
+
+---
+
+## **`Interface Segregation Principle (ISP) :`**
+
+Les interfaces doivent être spécifiques et ne devraient pas contenir de méthodes inutiles pour les classes qui les implémentent. Par exemple, une interface de base de données ne devrait pas contenir de méthodes pour la présentation de l'interface utilisateur, car ces méthodes ne seraient pas nécessaires pour toutes les classes qui implémentent cette interface.
+
+---
+
+## **`Dependency Inversion Principle (DIP) :`**
+
+Les modules de haut niveau (comme les algorithmes de traitement de données) ne devraient pas dépendre des modules de bas niveau (comme les classes de gestion de bases de données), mais plutôt de l'interface de ces modules de bas niveau. Cela signifie que vous devriez utiliser des interfaces pour définir les interactions entre les modules de votre programme, plutôt que de dépendre directement des implémentations de ces modules.
+
+Par exemple, si vous avez une classe "DataProcessor" qui utilise une classe "DatabaseManager" pour accéder à une base de données, vous devriez utiliser une interface "IDatabaseManager" pour définir les méthodes nécessaires pour accéder à la base de données, plutôt que de dépendre directement de la classe "DatabaseManager". Cela permet de rendre votre code plus flexible et plus facile à maintenir, car vous pouvez changer l'implémentation de la classe "DatabaseManager" sans avoir à modifier la classe "DataProcessor".
+
+---
+
+En résumé, les principes **`SOLID`** visent à améliorer la qualité et la maintenabilité du code en encourageant le développement de classes et d'interfaces spécifiques et en réduisant les dépendances entre les différents modules de votre programme. En suivant ces principes, vous pouvez créer du code qui est plus facile à comprendre, à maintenir et à étendre.
+
+Voici quelques exemples de l'utilisation des principes **`SOLID`** en PHP :
+
+1. [`S`RP](./Principes_SOLID/SRP.mdx)
+
+2. [`O`CP](./Principes_SOLID/OCP.mdx)
+
+3. [`L`SP](./Principes_SOLID/LSP.mdx)
+
+4. [`I`SP](./Principes_SOLID/ISP.mdx)
+
+5. [`D`IP](./Principes_SOLID/DIP.mdx)
+
+---
+
+## **`Exercices :`**
+
+En tenant compte de ces principes, je vous ai préparé quelques exercices pour que vous puissiez les mettres rapidement en application et voir par vous meme ce que cela implique.
+
+1. [`S`RP](./Exercices/SRP.mdx)
+
+2. [`O`CP](./Exercices/OCP.mdx)
+
+3. [`L`SP](./Exercices/LSP.mdx)
+
+4. [`I`SP](./Exercices/ISP.mdx)
+
+5. [`D`IP](./Exercices/DIP.mdx)
+
+---
+
+## **`BONUS PLUS pour aller plus loin :`**
+
+Si vous voulez creuser un peu plus, voici d'autres idées :-D
+
+1. Créez une classe "EmailSender" qui a une méthode "send" qui envoie un email à une adresse spécifiée en utilisant la fonction "mail" de PHP. Modifiez la classe pour qu'elle respecte SRP en séparant la logique d'envoi de l'email de la logique de validation de l'adresse email.
+
+2. Créez une classe "Product" qui a une méthode "price" qui retourne le prix d'un produit en utilisant un taux de change fixe de 1.2. Modifiez la classe pour qu'elle respecte OCP en utilisant une interface ou une classe abstraite pour accéder au taux de change au lieu de dépendre directement de la valeur fixe de 1.2.
+
+3. Créez une classe "Queue" qui a une méthode "enqueue" qui ajoute un élément à la fin de la file d'attente et une méthode "dequeue" qui retire l'élément en tête de la file d'attente. Modifiez la classe pour qu'elle respecte LSP en s'assurant que la méthode "enqueue" a le même comportement dans toutes les classes filles de "Queue".
+
+4. Créez une classe "Person" avec une méthode "greet" qui affiche un message de bienvenue à une personne. Créez une classe "Customer" qui hérite de "Person" et qui a une méthode "greet" qui affiche un message de bienvenue différent. Modifiez la classe "Customer" pour qu'elle respecte ISP en déplaçant la méthode "greet" dans une interface séparée et en s'assurant que la classe "Person" ne dépend pas de cette méthode.
+
+5. Créez une classe "InvoiceGenerator" qui a une méthode "generatePDF" qui génère un PDF de facture à partir de données de facture en utilisant une bibliothèque tierce. Modifiez la classe pour qu'elle respecte DIP en définissant une interface ou une classe abstraite pour accéder à la bibliothèque PDF au lieu de dépendre directement de la bibliothèque tierce.

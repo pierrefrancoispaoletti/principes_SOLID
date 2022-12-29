@@ -1,0 +1,57 @@
+Open/Closed Principle (OCP) :
+Voici un exemple de mauvaise utilisation de OCP dans une classe de gestion de factures :
+
+```PHP
+class InvoiceManager {
+  public function calculateTotal($invoice) {
+    if ($invoice->country == 'US') {
+      return $invoice->amount * 1.1;
+    } elseif ($invoice->country == 'CA') {
+      return $invoice->amount * 1.15;
+    } else {
+      return $invoice->amount * 1.2;
+    }
+  }
+}
+```
+
+Dans cet exemple, la classe "InvoiceManager" est modifiée chaque fois qu'un nouveau pays est ajouté ou que les taux de taxe sont modifiés. Selon OCP, cette classe devrait être étendue plutôt que modifiée directement.
+
+Voici comment cela pourrait être implémenté :
+
+```PHP
+interface TaxCalculator {
+  public function calculate($amount);
+}
+
+class USTaxCalculator implements TaxCalculator {
+  public function calculate($amount) {
+    return $amount * 1.1;
+  }
+}
+
+class CATaxCalculator implements TaxCalculator {
+  public function calculate($amount) {
+    return $amount * 1.15;
+  }
+}
+
+class InvoiceManager {
+  private $taxCalculator;
+
+  public function __construct(TaxCalculator $taxCalculator) {
+    $this->taxCalculator = $taxCalculator;
+  }
+
+  public function calculateTotal($invoice) {
+    return $this->taxCalculator->calculate($invoice->amount);
+  }
+}
+
+// Pour utiliser la classe InvoiceManager avec un taux de taxe de 1.1 pour les factures aux États-Unis :
+$invoiceManager = new InvoiceManager(new USTaxCalculator());
+$total = $invoiceManager->calculateTotal($invoice);
+
+```
+
+En utilisant cette approche, vous pouvez étendre la classe InvoiceManager en ajoutant de nouvelles implémentations de TaxCalculator pour prendre en compte de nouveaux pays ou des taux de taxe modifiés sans avoir à modifier directement la classe InvoiceManager.

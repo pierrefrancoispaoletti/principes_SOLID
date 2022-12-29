@@ -1,0 +1,42 @@
+Single Responsibility Principle (SRP) :
+Voici un exemple de mauvaise utilisation de SRP dans une classe de gestion de base de données :
+
+```php
+<?php
+
+class DatabaseManager {
+public function \_\_construct($host, $username, $password, $database) {
+// Initialise la connexion à la base de données
+}
+
+public function query($sql) {
+// Exécute une requête SQL sur la base de données
+}
+
+public function renderForm() {
+// Génère du code HTML pour afficher un formulaire
+}
+}
+```
+
+Dans cet exemple, la classe "DatabaseManager" a deux responsabilités : gérer la connexion à la base de données et afficher un formulaire. Selon SRP, cette classe devrait être séparée en deux classes, une pour la gestion de la base de données et une autre pour l'affichage du formulaire.
+
+Voici comment cela pourrait être implémenté :
+
+```php
+class DatabaseConnection {
+  public function __construct($host, $username, $password, $database) {
+    // Initialise la connexion à la base de données
+  }
+
+  public function query($sql) {
+    // Exécute une requête SQL sur la base de données
+  }
+}
+
+class FormRenderer {
+  public function renderForm() {
+    // Génère du code HTML pour afficher un formulaire
+  }
+}
+```

@@ -1,0 +1,47 @@
+Dependency Inversion Principle (DIP) :
+Voici un exemple de mauvaise utilisation de DIP dans une classe de gestion de factures :
+
+```PHP
+class InvoiceManager {
+  public function calculateTotal($invoice) {
+    $database = new MySQLDatabase();
+    $taxRate = $database->getTaxRate($invoice->country);
+    return $invoice->amount * (1 + $taxRate);
+  }
+}
+```
+
+Dans cet exemple, la classe InvoiceManager dépend directement de la classe MySQLDatabase pour accéder aux données de taux de taxe. Cela peut poser problème si vous voulez utiliser une autre base de données ou si vous voulez changer l'implémentation de la classe MySQLDatabase, car vous devrez également modifier la classe InvoiceManager.
+
+Pour respecter DIP, il est recommandé de définir une interface ou une classe abstraite pour accéder aux données de taux de taxe et d'injecter une implémentation de cette interface ou de cette classe abstraite dans la classe InvoiceManager. Voici comment cela pourrait être implémenté :
+
+```PHP
+interface TaxRateProvider {
+  public function getTaxRate($country);
+}
+
+class MySQLDatabase implements TaxRateProvider {
+  public function getTaxRate($country) {
+    // Récupère le taux de taxe pour le pays spécifié à partir de la base de données MySQL
+  }
+}
+
+class InvoiceManager {
+  private $taxRateProvider;
+
+  public function __construct(TaxRateProvider $taxRateProvider) {
+    $this->taxRateProvider = $taxRateProvider;
+  }
+
+  public function calculateTotal($invoice) {
+    $taxRate = $this->taxRateProvider->getTaxRate($invoice->country);
+    return $invoice->amount * (1 + $taxRate);
+  }
+}
+
+// Pour utiliser la classe InvoiceManager avec une base de données MySQL :
+$invoiceManager = new InvoiceManager(new MySQLDatabase());
+$total = $invoiceManager->calculateTotal($invoice);
+```
+
+En utilisant cette approche, vous pouvez définir une interface pour accéder aux données de taux de taxe et injecter une implémentation de cette interface dans la classe InvoiceManager, plutôt que de dépendre directement de la classe MySQLDatabase. Cela rend votre code plus flexible et plus facile à maintenir, car vous pouvez changer l'implémentation de la classe MySQLDatabase sans avoir à modifier la classe InvoiceManager.

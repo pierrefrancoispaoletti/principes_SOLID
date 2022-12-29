@@ -1,0 +1,57 @@
+Interface Segregation Principle (ISP) :
+Voici un exemple de mauvaise utilisation de ISP dans une interface de gestion de bases de données :
+
+```PHP
+interface DatabaseManager {
+  public function connect();
+  public function query($sql);
+  public function close();
+  public function renderForm();
+}
+```
+
+Dans cet exemple, l'interface DatabaseManager contient une méthode renderForm() qui n'est pas nécessaire pour toutes les classes qui implémentent cette interface. Selon ISP, cette méthode devrait être déplacée dans une interface séparée qui sera implémentée par les classes qui ont besoin de cette fonctionnalité.
+
+Voici comment cela pourrait être implémenté :
+
+```PHP
+interface DatabaseConnection {
+  public function connect();
+  public function query($sql);
+  public function close();
+}
+
+interface FormRenderer {
+  public function renderForm();
+}
+
+class MySQLConnection implements DatabaseConnection {
+  public function connect() { /* ... */ }
+  public function query($sql) { /* ... */ }
+  public function close() { /* ... */ }
+}
+
+class OracleManager implements DatabaseConnection, FormRenderer {
+  private $db;
+
+  public function __construct(DatabaseConnection $db) {
+    $this->db = $db;
+  }
+
+  public function connect() {
+    $this->db->connect();
+  }
+
+  public function query($sql) {
+    $this->db->query($sql);
+  }
+
+  public function close() {
+    $this->db->close();
+  }
+
+  public function renderForm() { /* ... */ }
+}
+```
+
+En utilisant cette approche, vous pouvez créer des interfaces spécifiques qui ne contiennent que les méthodes nécessaires pour chaque groupe de classes, ce qui rend votre code plus facile à comprendre et à maintenir.
